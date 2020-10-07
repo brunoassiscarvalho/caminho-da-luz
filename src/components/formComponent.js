@@ -1,24 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Form from '@rjsf/material-ui';
 
+// const onSubmit = ({formData}, e) => console.log("Data submitted: ",  formData);
 
-
-export default class Main extends Component {
-    constructor() {
-        super()
-
-    }
-
-    render() {
-        const { routes, schema } = this.props
-        return (
-
-            <Form schema={schema}
-                onChange={console.log("changed")}
-                onSubmit={console.log("submitted")}
-                onError={console.log("errors")} />
-
-
-        );
-    }
+export default function formComponent({ routes, schema, formData, onSubmit }) {
+    return (
+        <Form schema={schema}
+            formData={formData}
+            onChange={console.log("changed")}
+            onSubmit={onSubmit}
+            onError={console.log("errors")} />
+    );
 }

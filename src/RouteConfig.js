@@ -3,7 +3,7 @@
 import Login from "./pages/login/login";
 import Main from "./pages/main";
 import Transaction from "../src/pages/transaction"
-import AssistidosForm from "./pages/assistidos/assistidosForm"
+import ParticipantForm from "./pages/participant/participantForm"
 
 export default [
     {
@@ -26,7 +26,7 @@ export default [
                         exact: true,
                         name: "Lista",
                         path: "/main",
-                        component: AssistidosForm
+                        component: ParticipantForm
                     },
                 ]
             },           

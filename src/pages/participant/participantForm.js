@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import FormComponent from '../../components/formComponent'
 import { Container } from '@material-ui/core';
+import ParticipantService from './participantService';
+
 
 const schema = {
     title: "Assistido",
@@ -58,9 +60,12 @@ export default class Main extends Component {
     constructor() {
         super()
         console.log("MAIN Constructor")
+        this.participantService = new ParticipantService()
+        this.onSubmit = this.onSubmit.bind(this)
     }
 
     onSubmit(data){
+        this.participantService.createParticipant(data.formData).then()
         console.log("submit", data.formData)
     }
 

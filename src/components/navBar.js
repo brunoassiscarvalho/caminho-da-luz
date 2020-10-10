@@ -38,7 +38,7 @@ export default function NavBar() {
                         <Tab label="Item Two" />
                         <Tab label="Item Three" />
                     </Tabs>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit">{sessionStorage.getItem("caminhoDaLuz-name")}</Button>
                 </Toolbar>
             </AppBar>
       

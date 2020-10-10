@@ -14,7 +14,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-require('./controllers/authController')(app);
-require('./controllers/particiPantController')(app);
+require('./controllers/index')(app);
+// require('./controllers/particiPantController')(app);
 
 app.listen(3005);

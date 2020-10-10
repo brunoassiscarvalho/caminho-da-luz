@@ -11,11 +11,6 @@ const ParticipantSchema = new mongoose.Schema({
     createdAt:{type: Date, default: Date.now }
 })
 
-// ParticipantSchema.pre('save', async function(next){
-//     const hash = await bcrypt.hash(this.password, 10);
-//     this.password = hash;
-//     next();
-// })
 
 const User = mongoose.model('Participant', ParticipantSchema);
 module.exports = User;

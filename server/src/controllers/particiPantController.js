@@ -3,7 +3,7 @@ const router = express.Router();
 const authMidlleware = require('../middlewares/auth');
 const Paricipant = require('../model/participant');
 
-//  router.use(authMidlleware)
+ router.use(authMidlleware)
 
 router.get('',async (req, res) => {
     res.send("/participant")

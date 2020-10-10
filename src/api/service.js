@@ -29,7 +29,7 @@ export default class Service {
         //     headers["kodiak-partner"] = sessionStorage.getItem(Storage.PARTNER);
         //   if (sessionStorage.getItem(Storage.SERVICE))
         //     headers["kodiak-service"] = sessionStorage.getItem(Storage.SERVICE);
-const headers={};
+        const headers = { Authorization: `Bearer ${sessionStorage.getItem("caminhoDaLuz-token")}` };
         return axios(url, this._objectRequest(method, data, headers));
         // }
     }

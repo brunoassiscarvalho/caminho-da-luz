@@ -1,20 +1,4 @@
-// import React from 'react'
-// 
-// import { Container, TextField, Button } from '@material-ui/core'
 
-// export default function Login() {
-//     return (
-//         <Container maxWidth="sm">
-//             <form noValidate autoComplete="off">
-//                 <TextField id="standard-basic" label="Usuário" />
-//                 <TextField id="standard-basic" label="Senha" />
-//                 <Button component={RouterLink} to="/main">
-//                     Entrar
-//                 </Button>
-//             </form>
-//         </Container>
-//     )
-// }
 
 
 import React from 'react';
@@ -31,37 +15,24 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink, useHistory  } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import LoginService from './loginService';
 import FormComponent from '../../components/formComponent'
 
-
-// function Copyright() {
-//     return (
-//         <Typography variant="body2" color="textSecondary" align="center">
-//             {'Copyright © '}
-//             <Link color="inherit" href="https://material-ui.com/">
-//                 Your Website
-//       </Link>{' '}
-//             {new Date().getFullYear()}
-//             {'.'}
-//         </Typography>
-//     );
-// }
-
 const schema = {
-
     type: "object",
     required: ["email", "password"],
     properties: {
-
         email: { type: "string", title: "Email", default: "" },
         password: { type: "string", title: "Senha", default: "" },
-
-
-
     }
 };
+
+const uiSchema = {
+    password: { 
+        "ui:widget":"password"
+     },
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -89,14 +60,14 @@ const loginService = new LoginService();
 export default function Login() {
     const classes = useStyles();
     let history = useHistory();
-    
-    function onSubmit (form){
+
+    function onSubmit(form) {
         loginService.authenticate(form.formData).then(
             (data) => {
-                console.log("auth ok:",data.data)
+                console.log("auth ok:", data.data)
                 history.push('/main')
             }
-        ).catch(err=>{
+        ).catch(err => {
             console.log(err)
         })
     }
@@ -109,36 +80,10 @@ export default function Login() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
-        </Typography>
+                    Caminho da Luz
+                </Typography>
                 <form className={classes.form} noValidate>
-                <FormComponent schema={schema} onSubmit={onSubmit}></FormComponent>
-                    {/* <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Senha"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Lembrar de mim"
-                    /> */}
+                    <FormComponent schema={schema} uiSchema={uiSchema} onSubmit={onSubmit}></FormComponent>
                     <Button
                         type="submit"
                         fullWidth

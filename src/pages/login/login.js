@@ -11,6 +11,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,9 +31,9 @@ const schema = {
 };
 
 const uiSchema = {
-    password: { 
-        "ui:widget":"password"
-     },
+    password: {
+        "ui:widget": "password"
+    },
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +61,8 @@ const loginService = new LoginService();
 
 export default function Login() {
     const classes = useStyles();
-    let history = useHistory();
+    const history = useHistory();
+    const [open, setOpen] = React.useState(false);
 
     function onSubmit(form) {
         loginService.authenticate(form.formData).then(
@@ -68,9 +71,17 @@ export default function Login() {
                 history.push('/main')
             }
         ).catch(err => {
+            setOpen(true);
             console.log(err)
         })
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }    
+        setOpen(false);
+      };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -93,12 +104,12 @@ export default function Login() {
                         component={RouterLink} to="/main"
                     >
                         Entrar
-          </Button>
+                    </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
                                 Esqueci minha senha?
-              </Link>
+                    </Link>
                         </Grid>
                         {/* <Grid item>
               <Link href="#" variant="body2">
@@ -111,6 +122,19 @@ export default function Login() {
             {/* <Box mt={8}>
         <Copyright />
       </Box> */}
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}                
+                onClose={handleClose}
+                key="snack">
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    severity="error"
+                    onClose={handleClose}>
+                    Dados incorretos. Não foi possível entrar.
+                </MuiAlert>
+            </Snackbar>
         </Container>
     );
 }

@@ -10,6 +10,12 @@ export default class ParticipantService extends Service{
         const res = await this.requestServer("POST", "/participant/create", params)
         return res;
     }
+
+    async getParticiantList(){
+        const res = await this.requestServer("GET", "/participant/list")
+        return res;
+    }
+
     async getStates(){
         const url= "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
         return await axios.get(url);
@@ -20,7 +26,8 @@ export default class ParticipantService extends Service{
     }
     
     async getAddress(cep){
-        const url = `https://viacep.com.br/ws/${cep}/json/`
+        console.log(cep.replace(/\D/g,''))
+        const url = `https://viacep.com.br/ws/${cep.replace(/\D/g,'')}/json/`
         return await axios.get(url)
     }
 }

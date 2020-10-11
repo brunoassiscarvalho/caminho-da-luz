@@ -25,4 +25,20 @@ router.post('/create', async (req, res) => {
 })
 
 
+router.get('/list', async (req, res) => {
+    try{
+        const participants = await Paricipant.find();
+        return res.send(participants)
+    }catch(err){
+        // console.log("erro mongo",err)
+        // if(err.code===11000) res.status(400).send({ error: "Não foi possível prosseguir. Participante já cadastrado" })
+        // else 
+        res.status(400).send({ error: "Não foi possível cadastrar o participante" })      
+    }
+
+    // if (!user) return res.status(400).send({ error: "Não foi possível cadastrar o participante" })
+
+})
+
+
 module.exports = app => app.use('/participant', router)

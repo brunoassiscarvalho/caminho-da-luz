@@ -1,13 +1,11 @@
 
 import React, { Component } from 'react';
-// import FormComponent from '../../components/formComponent'
-import Form from '@rjsf/material-ui';
-import { Container, Snackbar, Fab } from '@material-ui/core';
+import { Container, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import ParticipantService from './participantService';
 import Utils from '../../utils/utils'
 import Slide from '@material-ui/core/Slide';
-import { NavigationIcon, Add as AddIcon } from '@material-ui/icons';
+import FormComponent from '../../components/formComponent';
 
 
 const schema = {
@@ -16,9 +14,10 @@ const schema = {
     required: ["name", "cpf"],
     properties: {
         name: { type: "string", title: "Nome", default: "" },
-        cpf: { type: "string", title: "CPF", default: "" },
+        cpf: { type: "string", title: "CPF", default: "", format: "cpf"},
         profession: { type: "string", title: "Profissão", default: "" },
         birthDate: { type: "string", title: "Data Nascimento", format: "date" },
+        // telTeste: { type: "string", title: "Telefone", format: "tel" },
         civilState: {
             type: "number", title: "Estado Civil", default: 0,
             "enum": [0, 1, 2, 3, 4, 5],
@@ -33,7 +32,7 @@ const schema = {
             type: "object",
             title: "Endereço",
             properties: {
-                cep: { type: "string", title: "CEP", default: "" },
+                cep: { type: "string", title: "CEP", default: "", format: "cep" },
                 neighbor: { type: "string", title: "Bairro", default: "" },
                 street: { type: "string", title: "Logradouro", default: "" },
                 number: { type: "string", title: "Número", default: "" },
@@ -43,7 +42,7 @@ const schema = {
         tel: {
             title: "Telefone(s)",
             type: "array",
-            items: { type: "string", title: "Número", default: "" }
+            items: { type: "string", title: "Número", default: "", format: "tel" }
         },
         family: {
             title: "Família",
@@ -52,7 +51,7 @@ const schema = {
                 type: "object",
                 properties: {
                     kinship: {
-                        type: "string", title: "Parentesco", default: "",
+                        type: "number", title: "Parentesco", default: "",
                         "enum": [0, 1,],
                         "enumNames": ["conjuge", "filha(o)"]
                     },
@@ -71,21 +70,37 @@ const schema = {
     }
 };
 
-// function Alert(props) {
-//     return <MuiAlert elevation={6} variant="filled" {...props} />;
-//   }
+const UiSchema = {
+    cpf: {
+        "ui:widget": "formattedInputs",
 
+    },
+    telTeste: {
+        "ui:widget": "formattedInputs",
+
+    },
+    tel: {
+        items:{
+
+            "ui:widget": "formattedInputs",
+        }
+
+    },
+    address: {
+        cep: {
+            "ui:widget": "formattedInputs",
+        }
+    }
+}
 
 export default class Main extends Component {
     constructor() {
         super()
-        console.log("MAIN Constructor")
         this.participantService = new ParticipantService()
         this.onSubmit = this.onSubmit.bind(this)
         this.onBlur = this.onBlur.bind(this)
         this.onChange = this.onChange.bind(this)
         this.handleClose = this.handleClose.bind(this)
-
         this.state = { formData: {}, disableForm: false };
         this.copyformData = {};
 
@@ -119,6 +134,9 @@ export default class Main extends Component {
     }
 
     onSubmit(data) {
+       if(data.formData.cpf) data.formData.cpf = data.formData.cpf.replace(/\D/g,'')
+       if(data.formData.address?.cep) data.formData.address.cep = data.formData.address.cep.replace(/\D/g,'')
+       if(data.formData.tel) data.formData.tel = data.formData.tel.map(tel=>tel.replace(/\D/g,''))
         this.copyformData = data.formData;
         this.participantService.createParticipant(data.formData).then((data) => {
             console.log("err.message 3", data)
@@ -128,10 +146,10 @@ export default class Main extends Component {
             this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
         })
         this.setState({ formData: this.copyformData })
-
     }
 
     onChange(data) {
+        console.log("onChange", data)
         this.copyformData = data.formData;
     }
 
@@ -167,20 +185,20 @@ export default class Main extends Component {
     render() {
         const { routes } = this.props
         return (
-            <Container style={{ paddingBottom: 80, paddingTop:20 }}>
+            <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
                 {this.state.schemaForm &&
-                    <Form
+                    <FormComponent
                         formData={this.state.formData}
                         schema={schema}
+                        uiSchema={UiSchema}
                         onSubmit={this.onSubmit}
                         validate={this.validate}
                         onBlur={this.onBlur}
                         onChange={this.onChange}
                         disabled={this.state.disableForm}
                     >
-                    </Form>
+                    </FormComponent>
                 }
-
                 <Snackbar
                     open={this.state.feedBackMessage}
                     autoHideDuration={6000}

@@ -1,21 +1,15 @@
 import React from 'react';
 import Form from '@rjsf/material-ui';
+import FormattedInputs from './formattedInputs'
 
-// const onSubmit = ({formData}, e) => console.log("Data submitted: ",  formData);
+const widgets = {
+    "formattedInputs": FormattedInputs
+}
 
-export default function formComponent(
-    // { routes, schema, uiSchema, formData, onSubmit, validate }
-    props
-) {
+export default function FormComponent(props) {
     return (
         <Form
-            // schema={schema}
-            // uiSchema={uiSchema}
-            // formData={formData}
-            // onChange={console.log("changed")}
-            // onSubmit={onSubmit}
-            // validate={validate}
-            // onError={console.log("errors")}
+            widgets={widgets}
             {...props}
         />
     );

@@ -4,6 +4,7 @@ import Login from "./pages/login/login";
 import Main from "./pages/main";
 import Transaction from "../src/pages/transaction"
 import ParticipantForm from "./pages/participant/participantForm"
+import ParticipantList from "./pages/participant/participantList"
 
 export default [
     {
@@ -18,7 +19,7 @@ export default [
         name: "Página principal",
         routes: [
             {
-                exact: true,
+                
                 path: "/main",
                 component: Transaction,
                 routes: [
@@ -26,6 +27,18 @@ export default [
                         exact: true,
                         name: "Lista",
                         path: "/main",
+                        component: ParticipantList
+                    },
+                    {
+                        exact: true,
+                        name: "Lista",
+                        path: "/main/new-participant",
+                        component: ParticipantForm
+                    },
+                    {
+                        exact: true,
+                        name: "Lista",
+                        path: "/main/participant-detail/:id_participant",
                         component: ParticipantForm
                     },
                 ]

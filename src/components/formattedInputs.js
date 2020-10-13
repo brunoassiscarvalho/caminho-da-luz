@@ -6,7 +6,6 @@ import { Input } from '@material-ui/core';
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
-  console.log(props)
   return (
     <MaskedInput
       {...other}
@@ -21,12 +20,11 @@ function TextMaskCustom(props) {
 
 const patternsMask = {
   tel: ['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-  cpf: [/[0-9]/, /\d/,/\d/,'.', /\d/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '-',/\d/,/\d/],
-  cep: [/[0-9]/, /\d/,'.', /\d/, /\d/, /\d/,'-',/\d/,/\d/,/\d/],
+  cpf: [/[0-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+  cep: [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
 }
 
 export default function FormattedInputs(props) {
-  console.log("FormattedInputs", props)
   const onChange = (event) => {
     props.onChange(event.target.value)
   };
@@ -41,7 +39,7 @@ export default function FormattedInputs(props) {
         {...props}
         type={props.schema.format}
         onChange={onChange}
-        onBlur = {onBlur}      
+        onBlur={onBlur}
         id={props.id}
         inputComponent={TextMaskCustom}
       />

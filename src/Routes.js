@@ -27,7 +27,6 @@ export default class Routes extends Component {
   listRoutes(routes) {
     const listItems = routes.map((route) => {
       route.context = routes.context;
-      console.log("mount route", `${route.name}: ${route.path}`)
       return (
         <Route
         exact={route.exact?route.exact:false}

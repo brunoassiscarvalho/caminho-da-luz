@@ -38,7 +38,7 @@ export default [
                     {
                         exact: true,
                         name: "Lista",
-                        path: "/main/participant-detail/:id_participant",
+                        path: "/main/participant-detail/:participantId",
                         component: ParticipantForm
                     },
                 ]

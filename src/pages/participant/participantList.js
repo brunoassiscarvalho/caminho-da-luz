@@ -1,12 +1,13 @@
 import { Container } from '@material-ui/core';
 import React, { Component } from 'react'
 import ParticipantService from './participantService';
-import {ListItem, ListItemText} from '@material-ui/core';
-import { Link as RouterLink} from 'react-router-dom';
+import { ListItem, ListItemText, Button } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 function ListItemLink(props) {
-    return <ListItem button component="a" {...props} component={RouterLink} to={`/main/participant-detail/${props.participantId}`}/>;
-  }
+    return <ListItem button component="a" {...props} component={RouterLink} to={`/main/participant-detail/${props.participantId}`} />;
+}
 
 
 export default class Main extends Component {
@@ -22,7 +23,6 @@ export default class Main extends Component {
 
     getParticipantList() {
         this.participantService.getParticiantList().then((data) => {
-            console.log(data)
             this.setState({ listParticipants: data.data })
         })
     }
@@ -31,6 +31,15 @@ export default class Main extends Component {
         const { routes } = this.props
         return (
             <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
+
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    component={RouterLink} to="/main/new-participant"
+                >
+                    + Partcitpante
+                </Button>
                 {this.state.listParticipants &&
                     this.state.listParticipants.map((participant) =>
                         <ListItemLink participantId={participant._id}>

@@ -16,6 +16,26 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'build')));
 
+
+const redirectionFilter = function (req, res, next) {
+  const theDate = new Date();
+  const receivedUrl = `${req.protocol}:\/\/${req.hostname}:${port}${req.url}`;
+
+  if (req.get('X-Forwarded-Proto') === 'http') {
+    const redirectTo = `https:\/\/${req.hostname}${req.url}`;
+    console.log(`${theDate} Redirecting ${receivedUrl} --> ${redirectTo}`);
+    res.redirect(301, redirectTo);
+  } else {
+    next();
+  }
+};
+
+app.get('*', redirectionFilter);
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.get('/ping', function (req, res) {
   return res.send('pong ' + process.env.REACT_APP_MY_SERVICE);
 });
@@ -29,9 +49,7 @@ require('./server/src/controllers/index')(app);
 //     else res.sendFile(path.join(__dirname, 'build', 'index.html'));
 //   });
 // } else {
-  app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
+
 // }
 
 console.log("start server: " + process.env.REACT_APP_MY_SERVICE)

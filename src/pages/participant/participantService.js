@@ -1,12 +1,8 @@
 import Service from "../../api/service"
 import axios from "axios"
-import moment from 'moment'
 
 export default class ParticipantService extends Service {
-  constructor() {
-    super();
 
-  }
   async createParticipant(params) {
     const res = await this.requestServer("POST", "/participant/create", params)
     return res.data;

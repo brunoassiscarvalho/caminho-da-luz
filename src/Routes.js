@@ -3,10 +3,6 @@ import { Switch, Route } from "react-router-dom";
 
 export default class Routes extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { routes, children } = this.props;
     return (

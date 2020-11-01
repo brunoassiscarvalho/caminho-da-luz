@@ -1,10 +1,7 @@
 import Service from "../../api/service"
 
 export default class EventService extends Service {
-  constructor() {
-    super();
-
-  }
+  
   async createEvent(params) {
     const res = await this.requestServer("POST", "/event/create", params)
     return res.data;

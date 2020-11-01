@@ -56,7 +56,6 @@ class EventParticipant extends Component {
   }
 
   render() {
-    const { routes } = this.props
     return (
       <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
         <EventDetail eventId={this.eventId}></EventDetail>

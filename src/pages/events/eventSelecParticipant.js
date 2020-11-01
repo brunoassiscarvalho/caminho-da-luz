@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core';
 import React, { Component } from 'react'
 import ParticipantService from '../participant/participantService';
-import { Link as RouterLink, withRouter  } from 'react-router-dom';
+import { withRouter  } from 'react-router-dom';
 import ListParticipants from '../../components/listParticipants';
 
 

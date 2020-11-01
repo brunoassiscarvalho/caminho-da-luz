@@ -38,7 +38,6 @@ class ParticipantList extends Component {
   }
 
   render() {
-    const { routes } = this.props
     return (
       <Container>
 

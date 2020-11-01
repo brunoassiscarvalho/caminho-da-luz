@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
-import { Container, Grid, GridList, GridListTile, ListSubheader, ButtonBase, Paper, Typography } from '@material-ui/core'
+import {Grid} from '@material-ui/core'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
-import { Link as RouterLink } from 'react-router-dom';
 import IconCard from '../../components/IconCard';
 
 
@@ -25,9 +24,7 @@ const facilities = [
 ]
 
 export default class FacilitiesGrid extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
 
     return (

@@ -1,23 +1,20 @@
 import { Container } from '@material-ui/core';
 import React, { Component } from 'react'
-import ParticipantService from './participantService';
+import ParticipantService from '../participant/participantService';
 import { Link as RouterLink, withRouter  } from 'react-router-dom';
-import AddIcon from '@material-ui/icons/PersonAdd';
-import Fab from '@material-ui/core/Fab';
 import ListParticipants from '../../components/listParticipants';
 
 
-// function ListItemLink(props) {
-//   return <ListItem button component="a" {...props} component={RouterLink} to={`/main/participant/detail/${props.participantId}`} />;
-// }
+class EventSelectParticipant extends Component {
 
-class ParticipantList extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.participantService = new ParticipantService()
     this.state = {};
     this.listParticipants = [];
     this.selectParticipant = this.selectParticipant.bind(this)
+    const { eventId } = this.props.match.params;
+    this.eventId = eventId
   }
 
   componentDidMount() {
@@ -33,12 +30,11 @@ class ParticipantList extends Component {
   }
 
   selectParticipant(participant) {
-    console.log(participant)
-    this.props.history.push(`/main/participant/edit/${participant._id}`)
+    console.log("participante", participant)
+    this.props.history.push(`/main/event/register/${this.eventId}/${participant._id}`)
   }
 
   render() {
-    const { routes } = this.props
     return (
       <Container>
 
@@ -47,15 +43,10 @@ class ParticipantList extends Component {
             list={this.state.listParticipants}
             onClick={this.selectParticipant}
           />
-        }
-
-        <Fab color="primary" aria-label="add" style={{ position: "fixed", bottom: 50 }} component={RouterLink} to="/main/participant/new">
-          <AddIcon />
-        </Fab>
+        }        
       </Container>
-    );
+    )
   }
 }
 
-
-export default withRouter(ParticipantList)
+export default withRouter(EventSelectParticipant)

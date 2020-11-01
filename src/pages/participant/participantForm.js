@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
-import { Container, Snackbar, Button } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Container, Button } from '@material-ui/core';
 import ParticipantService from './participantService';
 import Utils from '../../utils/utils'
-import Slide from '@material-ui/core/Slide';
 import FormComponent from '../../components/formComponent';
+import SnackbarFeedback from '../../components/snackbarFeedback';
+
+
 
 const schema = {
   title: "Dados Pessoais",
@@ -96,7 +97,6 @@ export default class Main extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onBlur = this.onBlur.bind(this)
     this.onChange = this.onChange.bind(this)
-    this.handleClose = this.handleClose.bind(this)
     this.state = { formData: {}, disableForm: false };
     this.copyformData = {};
     const { participantId } = this.props.match.params;
@@ -109,19 +109,19 @@ export default class Main extends Component {
   }
 
   getParticipant(participantId) {
-    this.participantService.getParticipant(participantId).then(data => {
-      if (data.data.birthDate) data.data.birthDate = data.data.birthDate.toString().split("T")[0];
-      this.setState({ formData: data.data })
+    this.participantService.getParticipant(participantId).then(data => {  
+      if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
+      this.setState({ formData: data })
     })
   }
 
   insertStatesAndCitiesOnSchema() {
     this.participantService.getStates().then((data) => {
-      const states = data.data.map(item => item.sigla)
+      const states = data.map(item => item.sigla)
       schema.properties.originState.enum = states;
       states.map(stateItem => {
         this.participantService.getCities(stateItem).then((data) => {
-          const citiesList = data.data.map(city => city.nome)
+          const citiesList = data.map(city => city.nome)
           const properties = {
             originState: {
               enum: [
@@ -149,7 +149,8 @@ export default class Main extends Component {
 
   createParticipant(data) {
     this.participantService.createParticipant(data.formData).then((data) => {
-      this.participantId = data.data._id
+      if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
+      this.participantId = data._id
       this.setState({ feedBackMessage: "Participante cadastado com sucesso", feedBackStatus: "success" })
     }).catch((err) => {
       this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
@@ -159,9 +160,8 @@ export default class Main extends Component {
 
   updateParticipant(data) {
     this.participantService.updateParticipant(data.formData).then((data) => {
-      if (data.data.birthDate) data.data.birthDate = data.data.birthDate.toString().split("T")[0];
-      console.log("updateParticipant", data.data)
-      this.setState({ formData: data.data }, () => this.setState({ feedBackMessage: "Participante Atualizado com sucesso", feedBackStatus: "success" }))
+      if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
+      this.setState({ formData: data }, () => this.setState({ feedBackMessage: "Participante Atualizado com sucesso", feedBackStatus: "success" }))
     }).catch((err) => {
       this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
     })
@@ -177,16 +177,12 @@ export default class Main extends Component {
       this.participantService.getAddress(value).then(data => {
         const address = {
           cep: value,
-          neighbor: data.data.bairro,
-          street: data.data.logradouro
+          neighbor: data.bairro,
+          street: data.logradouro
         }
         this.setState({ formData: { ...this.copyformData, address: address } });
       })
     }
-  }
-
-  handleClose() {
-    this.setState({ feedBackMessage: false, feedBackStatus: "" })
   }
 
   validate(formData, errors) {
@@ -194,10 +190,6 @@ export default class Main extends Component {
       errors.cpf.addError("CPf Inváldo");
     }
     return errors;
-  }
-
-  TransitionDown(props) {
-    return <Slide {...props} direction="down" />;
   }
 
   render() {
@@ -223,21 +215,8 @@ export default class Main extends Component {
               Salvar
                         </Button>
           </FormComponent>
-        }
-        <Snackbar
-          open={this.state.feedBackMessage}
-          autoHideDuration={6000}
-          TransitionComponent={this.TransitionDown}
-          onClose={this.handleClose}
-          key="snack">
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            severity={this.state.feedBackStatus}
-            onClose={this.handleClose}>
-            {this.state.feedBackMessage}
-          </MuiAlert>
-        </Snackbar>
+        }        
+        {(this.state.feedBackMessage && this.state.feedBackStatus) && <SnackbarFeedback message={this.state.feedBackMessage} status={this.state.feedBackStatus} ></SnackbarFeedback>}
       </Container>
     );
   }

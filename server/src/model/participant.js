@@ -1,5 +1,6 @@
 const mongoose = require('../database');
-// const bcrypt = require('bcryptjs') 
+const moment = require ('moment')
+moment.locale('pt-br');
 
 const ParticipantSchema = new mongoose.Schema({
   name: { type: String, require: true },
@@ -26,6 +27,12 @@ const ParticipantSchema = new mongoose.Schema({
       isParticipant: { type: Boolean },
     }
   ],
+  events:[
+    {
+      kind:{ type: Number, enum: [0] },
+      date: { type: Date },
+    }
+  ],
   createdAt: { type: Date, default: Date.now }
 })
 
@@ -37,6 +44,28 @@ ParticipantSchema.pre('save', async function (next) {
   next();
 })
 
+// ParticipantSchema.post('find', function(result) {
 
-const User = mongoose.model('Participant', ParticipantSchema);
-module.exports = User;
+//   // console.log(this instanceof mongoose.Query); // true
+//   console.log('find() returned ' + JSON.stringify(result));
+//   if(Array.isArray(result)){
+//     const newResult = result.map((data)=>{
+//       console.log("new date", moment(data.birthDate).format('L'))
+//       if (data.birthDate) data.birthDate = moment(data.birthDate).format('L')
+//       return data
+//     })
+//     console.log("newResult array", JSON.stringify(newResult))
+//     return newResult
+//   }else{
+//     if (result.birthDate) result.birthDate = moment(result.birthDate).format('L');
+//     console.log("newResult", JSON.stringify(result))
+//     return result
+//   }
+//   // // prints returned documents
+//   // // prints number of milliseconds the query took
+//   // console.log('find() took ' + (Date.now() - this.start) + ' millis');
+// });
+
+
+const Participant = mongoose.model('Participant', ParticipantSchema);
+module.exports = Participant;

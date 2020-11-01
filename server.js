@@ -60,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/ping', function (req, res) {
  return res.send('pong '+ process.env.REACT_APP_MY_SERVICE);
 });
-app.get('/*', function (req, res) {
+app.get('', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 console.log("start server: "+ process.env.REACT_APP_MY_SERVICE)

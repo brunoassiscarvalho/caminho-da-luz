@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVICE_URL
-  ? `https://${process.env.REACT_APP_SERVICE_URL}`
-  : `http://localhost:3005`;
+axios.defaults.baseURL = process.env.REACT_APP_MY_SERVICE;
 
 export default class Service {
 

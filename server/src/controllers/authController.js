@@ -3,7 +3,6 @@ const User = require('../model/user')
 const router = express.Router();
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const auhtConfig = require('../config/auth')
 
 router.post('/register', async (req, res) => {
   const { email } = req.body
@@ -33,7 +32,7 @@ router.post('/authenticate', async (req, res) => {
 })
 
 function generateToken(params = {}) {
-  return jwt.sign(params, auhtConfig.secret, { expiresIn: 30000 })
+  return jwt.sign(params, process.env.DATA_MODE, { expiresIn: 30000 })
 }
 
 module.exports = app => app.use('/auth', router)

@@ -52,7 +52,7 @@ app.use(favicon(__dirname + '/build/favicon.ico'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
-require('./server/src/controllers/index')(app);
+// require('./server/src/controllers/index')(app);
 
 // the __dirname is the current directory from where the script is running
 app.use(express.static(__dirname));

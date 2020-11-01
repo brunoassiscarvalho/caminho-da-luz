@@ -7,9 +7,6 @@ const ObjectID  = require('mongodb').ObjectID
 
 router.use(authMidlleware)
 
-router.get('', async (req, res) => {
-  res.send("/registry")
-})
 
 router.post('/create', async (req, res) => {
   console.log("create event registre", req.body)

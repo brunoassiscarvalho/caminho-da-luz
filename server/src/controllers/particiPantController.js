@@ -5,9 +5,6 @@ const Paricipant = require('../model/participant');
 
 router.use(authMidlleware)
 
-router.get('', async (req, res) => {
-    res.send("/participant")
-})
 
 router.post('/create', async (req, res) => {
 

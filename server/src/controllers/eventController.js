@@ -5,9 +5,6 @@ const Event = require('../model/event');
 
 router.use(authMidlleware)
 
-router.get('', async (req, res) => {
-  res.send("/event")
-})
 
 router.post('/create', async (req, res) => {
   try {

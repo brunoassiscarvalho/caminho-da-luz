@@ -22,17 +22,17 @@ app.get('/ping', function (req, res) {
 
 require('./server/src/controllers/index')(app);
 
-if (process.env.NODE_ENV === "production") {
-  app.get('*', function (req, res) {
-    if (req.headers['x-forwarded-proto'] != 'https')
-      res.redirect(process.env.REACT_APP_MY_SERVICE + req.url);
-    else res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-} else {
+// if (process.env.NODE_ENV === "production") {
+//   app.get('*', function (req, res) {
+//     if (req.headers['x-forwarded-proto'] != 'https')
+//       res.redirect(process.env.REACT_APP_MY_SERVICE + req.url);
+//     else res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//   });
+// } else {
   app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
-}
+// }
 
 console.log("start server: " + process.env.REACT_APP_MY_SERVICE)
 app.listen(port);

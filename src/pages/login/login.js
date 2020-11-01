@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import LoginService from './loginService';
 import FormComponent from '../../components/formComponent'
 
@@ -55,8 +55,8 @@ export default function Login() {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const [erroMessage, setErroMessage] = React.useState("");  
-  const [email, setEmail] = React.useState(""); 
+  const [erroMessage, setErroMessage] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
   function onSubmit(form) {
     setEmail(form.formData.email);
@@ -65,7 +65,7 @@ export default function Login() {
         history.push('/main')
       }
     ).catch(err => {
-      setErroMessage(err.response.data.error || "Não foi possível logar")
+      setErroMessage(err.response?.data?.error || "Não foi possível logar")
       setOpen(true);
     })
   }
@@ -88,7 +88,7 @@ export default function Login() {
           Caminho da Luz
 				</Typography>
         <form className={classes.form} noValidate>
-          <FormComponent schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} formData={{email}}>
+          <FormComponent schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} formData={{ email }}>
             <Button
               type="submit"
               fullWidth
@@ -105,10 +105,10 @@ export default function Login() {
               <Link href="#" variant="body2">
                 Esqueci minha senha?
 					</Link>
-            </Grid>           
+            </Grid>
           </Grid>
         </form>
-      </div>      
+      </div>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -120,7 +120,7 @@ export default function Login() {
           severity="error"
           onClose={handleClose}>
           {erroMessage}
-				</MuiAlert>
+        </MuiAlert>
       </Snackbar>
     </Container>
   );

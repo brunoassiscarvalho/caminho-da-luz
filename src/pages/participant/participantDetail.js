@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Typography, Grid, Paper, Button, Fab, Divider } from '@material-ui/core'
+import { Container, Typography, Grid, Fab, Divider } from '@material-ui/core'
 import TextLabel from '../../components/textLabel'
 import ParticipantService from './participantService'
 import { MARITAL_STATUS, KINSHIP } from '../../utils/constants'

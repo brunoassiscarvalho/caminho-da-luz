@@ -23,12 +23,14 @@ export default class IconCard extends Component {
         return 100
       case 'small':
         return 50
+      default: 
+        return 200
     }
   }
 
 
     render() {
-      const { url, name, size } = this.props
+      const { url, name } = this.props
       return (
         <Grid key={url} item>
           <ButtonBase

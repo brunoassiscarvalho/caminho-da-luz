@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Typography, Grid } from '@material-ui/core'
+import { Typography, Grid } from '@material-ui/core'
 
 export default class TextLabel extends Component {
 

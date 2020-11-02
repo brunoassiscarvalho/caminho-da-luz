@@ -66,3 +66,12 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+# Environment Variables  #
+
+GENERATE_SOURCEMAP=false
+REACT_APP_MY_SERVICE=http://localhost:3005
+DATA_MODE=some_value
+PORT=3005
+DB_URI=mongodb://localhost/caminho-da-luz

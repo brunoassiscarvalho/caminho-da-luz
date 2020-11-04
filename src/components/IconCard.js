@@ -38,13 +38,13 @@ export default class IconCard extends Component {
             key={name}
             component={RouterLink} to={url}
           >
-            <Paper style={{ width: 200, height: 200 }}>
+            <Paper style={{ width: 100, height: 100 }}>
               <Grid container justify="center" spacing={1}>
-                <Grid item xs={24} sm={12} style={{ textAlign: "center" }}>
-                  <this.props.icon style={{ width: 60, height: 60, marginTop: 40 }} color="action" />
+                <Grid item xs={12} style={{ textAlign: "center" }}>
+                  <this.props.icon style={{ width: 50, height: 50, marginTop: 10,  }} color="action" />
                 </Grid>
-                <Grid item xs={24} sm={12} style={{ textAlign: "center" }}>
-                  <Typography variant="button" display="block" gutterBottom>
+                <Grid item xs={12} style={{ textAlign: "center" }}>
+                  <Typography variant="button" display="block" gutterBottom style={{fontSize: "x-small"}}>
                     {name}
                   </Typography>
                 </Grid>

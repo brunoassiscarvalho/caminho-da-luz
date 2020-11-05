@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ParticipantService from '../participant/participantService';
-import { Container, Box, Fab } from '@material-ui/core';
+import { Container, Box, Fab, Divider } from '@material-ui/core';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import EventDetail from './eventDetail';
 import ListParticipants from '../../components/listParticipants';
@@ -54,7 +54,8 @@ class EventParticipant extends Component {
       <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
         <EventDetail eventId={this.eventId} onGetEvent={this.getEvent}></EventDetail>
         {this.state.listParticipants &&
-          <>
+          <Box style={{marginTop: 20}}>
+            <Divider light style={{marginBottom: 20}}/>
             <ListParticipants
               list={this.state.listParticipants}
               onClick={this.selectParticipant}
@@ -80,7 +81,7 @@ class EventParticipant extends Component {
                   <AddIcon /> {this.state.listParticipants.length >= this.state.event.capacity ? "esgotado" : ""}
                 </Fab>
               </Box>}
-          </>
+          </Box>
         }
       </Container>
     );

@@ -12,14 +12,7 @@ const schema = {
     name: { type: "string", title: "Título", default: "" },
     description: { type: "string", title: "Descrição", default: "" },
     date: { type: "string", title: "Data Início", format: "date" },
-    capacity: { type: "number", title: "Capacidade" },
-    tag: {
-      type: "array",
-      title: "marcações",
-      items: {
-        type: "string"
-      }
-    }
+    capacity: { type: "number", title: "Capacidade" }
   },
 };
 
@@ -87,10 +80,6 @@ export default class EventForm extends Component {
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={this.onSubmit}
-        // validate={this.validate}
-        // onBlur={this.onBlur}
-        // onChange={this.onChange}
-        // disabled={this.state.disableForm}
         >
           <Button
             variant="contained"

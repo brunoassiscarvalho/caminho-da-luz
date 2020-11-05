@@ -39,14 +39,14 @@ export default class ParticipantDetail extends Component {
         {this.state.participant &&
           <Grid container spacing={1} >
 
-            <Fab
+            {/* <Fab
               color="primary"
               aria-label="add"
               style={{ position: "fixed", top: 100, right: 50 }}
               component={RouterLink}
               to={`/main/participant/edit/${this.participantId}`}>
               <EditIcon />
-            </Fab>
+            </Fab> */}
 
             <TextLabel label={'nome'} value={this.state.participant.name} ></TextLabel>
             <TextLabel label={'CPF'} value={this.state.participant.cpf} ></TextLabel>

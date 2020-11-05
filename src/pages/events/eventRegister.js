@@ -13,6 +13,7 @@ export default class EventForm extends Component {
     this.participantId = participantId;
     this.eventId = eventId;
     this.confirmation = this.confirmation.bind(this)
+    this.goBack = this.goBack.bind(this)
   }
 
   componentDidMount() {
@@ -28,6 +29,9 @@ export default class EventForm extends Component {
     }).catch((err) =>
       this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" }))
   }
+  goBack(){
+    this.props.history.go(-2);
+}
 
   render() {
     return (
@@ -54,7 +58,7 @@ export default class EventForm extends Component {
               </Button>
               </Grid>
               <Grid item xs={6} style={{ textAlign: 'left' }}>
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="secondary" onClick={this.goBack}>
                   Não
             </Button>
               </Grid>

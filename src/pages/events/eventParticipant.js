@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import ParticipantService from '../participant/participantService';
-import { Container } from '@material-ui/core';
+import { Container, Box, Fab } from '@material-ui/core';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import EventDetail from './eventDetail';
 import ListParticipants from '../../components/listParticipants';
 import EventService from './eventService';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/PersonAdd';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 class EventParticipant extends Component {
   constructor(props) {
@@ -16,8 +17,8 @@ class EventParticipant extends Component {
     this.state = {};
     this.listParticipants = [];
     const { eventId } = this.props.match.params;
-    // this.onChange = this.onChange.bind(this)
     this.selectParticipant = this.selectParticipant.bind(this)
+    this.getEvent = this.getEvent.bind(this);
     this.eventId = eventId;
   }
 
@@ -39,39 +40,48 @@ class EventParticipant extends Component {
     })
   }
 
-  // onChange(event) {
-  //   console.log("onchange", event.target.value)
-  //   const filtredList = this.listParticipants.filter(
-  //     (participant) => {
-  //       if (participant.name.includes(event.target.value) || participant.cpf.includes(event.target.value)) return true;
-  //       return false
-  //     }
-  //   )
-  //   this.setState({ listParticipants: filtredList })
-  // }
-
   selectParticipant(participant) {
     console.log("participante", participant)
     this.props.history.push(`/main/participant/detail/${participant._id}`)
   }
 
+  getEvent(event) {
+    this.setState({ event }, () => console.log("getEvent", this.state.event));
+  }
+
   render() {
     return (
       <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
-        <EventDetail eventId={this.eventId}></EventDetail>
+        <EventDetail eventId={this.eventId} onGetEvent={this.getEvent}></EventDetail>
         {this.state.listParticipants &&
-          <ListParticipants
-            list={this.state.listParticipants}
-            onClick={this.selectParticipant} />
+          <>
+            <ListParticipants
+              list={this.state.listParticipants}
+              onClick={this.selectParticipant}
+            />
+            {this.state.event &&
+              <Box component="div" m={1} style={{ position: "fixed", bottom: 50 }}>
+                <Fab
+                  color="secondary"
+                  aria-label="add"
+                  component={RouterLink}
+
+                  to={`/main/event/edit/${this.eventId}`}>
+                  <EditIcon />
+                </Fab>
+                <Fab
+                  variant={this.state.listParticipants.length >= this.state.event.capacity ? "extended" : "round"}
+                  disabled={this.state.listParticipants.length >= this.state.event.capacity}
+                  color="primary"
+                  aria-label="add"
+                  style={{ marginLeft: 60 }}
+                  component={RouterLink}
+                  to={`/main/event/add-participant/${this.eventId}`}>
+                  <AddIcon /> {this.state.listParticipants.length >= this.state.event.capacity ? "esgotado" : ""}
+                </Fab>
+              </Box>}
+          </>
         }
-        <Fab
-          color="primary"
-          aria-label="add"
-          style={{ position: "fixed", bottom: 50 }}
-          component={RouterLink}
-          to={`/main/event/add-participant/${this.eventId}`}>
-          <AddIcon />
-        </Fab>
       </Container>
     );
   }

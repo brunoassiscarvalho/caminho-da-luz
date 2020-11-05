@@ -4,7 +4,7 @@ import EventService from './eventService';
 import TextLabel from '../../components/textLabel';
 import IconCard from '../../components/IconCard';
 import EditIcon from '@material-ui/icons/Edit';
-import moment from'moment'
+import moment from 'moment'
 
 export default class EventDetail extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export default class EventDetail extends Component {
     this.eventService = new EventService();
     const { eventId } = this.props.match?.params || this.props;
     this.eventId = eventId;
+    this.onGetEvent = this.onGetEvent.bind(this)
   }
 
   componentDidMount() {
@@ -21,33 +22,30 @@ export default class EventDetail extends Component {
 
   getEvent(eventId) {
     this.eventService.getEvent(eventId).then(data => {
-      moment.locale('pt-br')      
+      moment.locale('pt-br')
       data.date = moment.utc(data.date).format('DD/MM/YYYY')
       this.setState({ event: data })
+      this.onGetEvent(data)
     })
   }
+  onGetEvent(data) {
+    if (this.props.onGetEvent!=null)
+      this.props.onGetEvent(data)
+    return null
+  }
+
 
   render() {
     return (
       <Container>
         {this.state.event &&
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
-              <Grid container spacing={1}>
-                <TextLabel label={'Nome'} value={this.state.event.name} ></TextLabel>
-                <TextLabel label={'Descrição'} value={this.state.event.descrption} ></TextLabel>
-                <TextLabel label={'Data de início'} value={this.state.event.date} ></TextLabel>
-                <TextLabel label={'Capacidade'} value={this.state.event.capacity} ></TextLabel>
-                {this.state.event.closeDate && <TextLabel label={'nome'} value={this.state.event.closeDate} ></TextLabel>}
-              </Grid>
-            </Grid>
-            {/* <Grid item xs={6} sm={3}>
-              <IconCard const url="/main/participant/new" name="participante" icon={AddIcon} ></IconCard>
-            </Grid> */}
-            <Grid item xs={6} sm={3}>
-            <IconCard const url={`/main/event/edit/${this.eventId}`} name="editar" icon={EditIcon} ></IconCard>
-            </Grid>
-          </Grid>
+          <>
+            <TextLabel label={'Nome'} value={this.state.event.name} ></TextLabel>
+            <TextLabel label={'Descrição'} value={this.state.event.descrption} ></TextLabel>
+            <TextLabel label={'Data de início'} value={this.state.event.date} ></TextLabel>
+            <TextLabel label={'Capacidade'} value={this.state.event.capacity + " participantes"} ></TextLabel>
+            {this.state.event.closeDate && <TextLabel label={'nome'} value={this.state.event.closeDate} ></TextLabel>}
+          </>
         }
       </Container>
     )

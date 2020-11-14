@@ -12,6 +12,7 @@ import FacilitiesGrid from "./pages/facilities/facilitiesGrid";
 import EventParticipant from "./pages/events/eventParticipant";
 import EventSelecParticipant from "./pages/events/eventSelecParticipant";
 import UserPass from "./pages/user/userPass";
+import UserValidate from "./pages/user/userValidate";
 
 export default [
   {
@@ -21,9 +22,29 @@ export default [
     component: Login
   },
   {
+    path: "/reset-pass",
+    exact: true,
+    name: "Esqueci a senha",
+    component: UserValidate
+  },
+  {
     path: "/main",
     component: Main,
     name: "Página principal",
+    validateRoute: [
+      {
+        path: "/main",
+        component: Transaction,
+        routes: [
+          {
+            exact: true,
+            name: "Validação",
+            path: "/main",
+            component: UserValidate
+          }
+        ]
+      }
+    ],
     routes: [
       {
 
@@ -41,7 +62,6 @@ export default [
             name: "Lista",
             path: "/main/participant",
             component: ParticipantList,
-            
           },
           {
             exact: true,
@@ -71,80 +91,50 @@ export default [
             exact: true,
             name: "Eventos",
             path: "/main/event",
-            component: EventGrid,            
+            component: EventGrid,
           },
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/new",
-            component: EventForm,            
+            component: EventForm,
           },
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/detail/:eventId",
-            component: EventDetail,            
+            component: EventDetail,
           },
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/edit/:eventId",
-            component: EventForm,            
+            component: EventForm,
           },
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/participants/:eventId",
-            component: EventParticipant,            
+            component: EventParticipant,
           },
-
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/add-participant/:eventId",
-            component: EventSelecParticipant,           
+            component: EventSelecParticipant,
           },
-
-          
           {
             exact: true,
             name: "Eventos",
             path: "/main/event/register/:eventId/:participantId",
-            component: EventRegister,            
+            component: EventRegister,
           },
-
           {
             exact: true,
             name: "Eventos",
-            path: "/main/user",
-            component: UserPass,            
-          },
-          
-          // ]
-          // {
-          //   exact: true,
-          //   name: "Lista",
-          //   path: "/main/new-participant",
-          //   component: ParticipantForm
-          // },
-          // {
-          //   exact: true,
-          //   name: "Lista",
-          //   path: "/main/edit-participant/:participantId",
-          //   component: ParticipantForm
-          // },
-          // {
-          //   exact: true,
-          //   name: "Lista",
-          //   path: "/main/participant-detail/:participantId",
-          //   component: ParticipantDetail
-          // },
-          // {
-          //   exact: true,
-          //   name: "Lista",
-          //   path: "/main/register-event/:participantId/:event",
-          //   component: EventForm
-          // },
+            path: "/main/user-pass",
+            component: UserPass,
+          }
         ]
       },
     ]

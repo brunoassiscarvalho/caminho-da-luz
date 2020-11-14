@@ -20,13 +20,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar() {
   const classes = useStyles();
+  console.log("caminhoDaLuz-name", sessionStorage.getItem("caminhoDaLuz-name"))
   return (
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
           Caminho da Luz
         </Typography>
-        <Button color="inherit" component={RouterLink} to="/main/user">{sessionStorage.getItem("caminhoDaLuz-name")}</Button>
+        <Button color="inherit" component={RouterLink} to="/main/user">
+          {sessionStorage.getItem("caminhoDaLuz-name") ||
+            sessionStorage.getItem("caminhoDaLuz-email") ||
+            ""}
+        </Button>
       </Toolbar>
     </AppBar>
 

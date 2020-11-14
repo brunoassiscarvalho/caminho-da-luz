@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +26,7 @@ export default function NavBar() {
         <Typography variant="h6" className={classes.title}>
           Caminho da Luz
         </Typography>
-        <Button color="inherit">{sessionStorage.getItem("caminhoDaLuz-name")}</Button>
+        <Button color="inherit" component={RouterLink} to="/main/user">{sessionStorage.getItem("caminhoDaLuz-name")}</Button>
       </Toolbar>
     </AppBar>
 

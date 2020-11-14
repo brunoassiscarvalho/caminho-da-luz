@@ -11,6 +11,7 @@ import EventRegister from "./pages/events/eventRegister";
 import FacilitiesGrid from "./pages/facilities/facilitiesGrid";
 import EventParticipant from "./pages/events/eventParticipant";
 import EventSelecParticipant from "./pages/events/eventSelecParticipant";
+import UserPass from "./pages/user/userPass";
 
 export default [
   {
@@ -110,6 +111,13 @@ export default [
             name: "Eventos",
             path: "/main/event/register/:eventId/:participantId",
             component: EventRegister,            
+          },
+
+          {
+            exact: true,
+            name: "Eventos",
+            path: "/main/user",
+            component: UserPass,            
           },
           
           // ]

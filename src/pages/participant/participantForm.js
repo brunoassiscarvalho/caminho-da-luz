@@ -4,7 +4,7 @@ import { Container, Button } from '@material-ui/core';
 import ParticipantService from './participantService';
 import Utils from '../../utils/utils'
 import FormComponent from '../../components/formComponent';
-import SnackbarFeedback from '../../components/snackbarFeedback';
+import { withSnackbar } from 'notistack';
 
 
 
@@ -90,15 +90,13 @@ const UiSchema = {
   }
 }
 
-export default class Main extends Component {
+class ParticipantForm extends Component {
   constructor(props) {
     super(props)
     this.participantService = new ParticipantService()
     this.onSubmit = this.onSubmit.bind(this)
     this.onBlur = this.onBlur.bind(this)
-    this.onChange = this.onChange.bind(this)
-    this.state = { formData: {}, disableForm: false };
-    this.copyformData = {};
+    this.state = { formData: {}};
     const { participantId } = this.props.match.params;
     this.participantId = participantId;
   }
@@ -139,7 +137,6 @@ export default class Main extends Component {
   }
 
   onSubmit(data) {
-    this.copyformData = data.formData;
     if (this.participantId)
       this.updateParticipant(data)
     else
@@ -151,25 +148,19 @@ export default class Main extends Component {
     this.participantService.createParticipant(data.formData).then((data) => {
       if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
       this.participantId = data._id
-      this.setState({ feedBackMessage: "Participante cadastado com sucesso", feedBackStatus: "success" })
+      this.props.enqueueSnackbar("Participante cadastado com sucesso",{variant: 'success'})     
     }).catch((err) => {
-      this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
+      this.props.enqueueSnackbar(err.response.data.error,{variant: 'error'})
     })
-    this.setState({ formData: this.copyformData })
   }
 
   updateParticipant(data) {
     this.participantService.updateParticipant(data.formData).then((data) => {
       if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
-      this.setState({ formData: data }, () => this.setState({ feedBackMessage: "Participante Atualizado com sucesso", feedBackStatus: "success" }))
+      this.props.enqueueSnackbar("Participante Atualizado com sucesso",{variant: 'success'})
     }).catch((err) => {
-      this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
+      this.props.enqueueSnackbar(err.response.data.error,{variant: 'error'})
     })
-    this.setState({ formData: this.copyformData })
-  }
-
-  onChange(data) {
-    this.copyformData = data.formData;
   }
 
   onBlur(id, value) {
@@ -180,7 +171,7 @@ export default class Main extends Component {
           neighbor: data.bairro,
           street: data.logradouro
         }
-        this.setState({ formData: { ...this.copyformData, address: address } });
+        this.setState({ formData: { ...this.state.formData, address: address } });
       })
     }
   }
@@ -200,24 +191,15 @@ export default class Main extends Component {
             formData={this.state.formData}
             schema={schema}
             uiSchema={UiSchema}
-            onSubmit={this.onSubmit}
+            onSubmit={({formData}) => this.onSubmit({formData})}
             validate={this.validate}
             onBlur={this.onBlur}
-            onChange={this.onChange}
-            disabled={this.state.disableForm}
-          >
-            <Button
-              variant="contained"
-              type="submit"
-              color="primary"
-            >
-              Salvar
-                        </Button>
-          </FormComponent>
+            onChange={({formData}) => this.setState({formData})}
+            buttonSubmit="Salvar"
+          />          
         }        
-        {(this.state.feedBackMessage && this.state.feedBackStatus) && <SnackbarFeedback message={this.state.feedBackMessage} status={this.state.feedBackStatus} ></SnackbarFeedback>}
       </Container>
     );
   }
 }
-
+export default withSnackbar(ParticipantForm);

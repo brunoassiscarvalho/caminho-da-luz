@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Container, Typography, Grid, Button } from '@material-ui/core'
 import EventService from './eventService';
 import ParticipantDetail from '../participant/participantDetail';
-import SnackbarFeedback from '../../components/snackbarFeedback';
+import { withSnackbar } from 'notistack';
 
-export default class EventForm extends Component {
+class EventRegister extends Component {
   constructor(props) {
     super(props)
     this.state = {};
@@ -24,52 +24,52 @@ export default class EventForm extends Component {
 
   confirmation() {
     this.serviceEvent.fetchRegistry({ participant: this.participantId, event: this.eventId }).then((data) => {
-      this.setState({ register: data },
-        () => this.setState({ feedBackMessage: "registro efetuado com sucesso", feedBackStatus: "success" }))
+      this.setState({ register: true },
+        () => this.props.enqueueSnackbar("Registro efetuado com sucesso", { variant: 'success' }))
     }).catch((err) =>
-      this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" }))
+      this.props.enqueueSnackbar(err.response.data.error, { variant: 'error' }))
   }
-  goBack(){
+  goBack() {
     this.props.history.go(-2);
-}
+  }
 
   render() {
     return (
       <Container style={{ paddingTop: 40 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom style={{textAlign:'center'}}>
+            <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }}>
               {this.state.event?.name}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <ParticipantDetail participantId={this.participantId}></ParticipantDetail>
           </Grid>
+          {!this.state.register &&
           <Grid item xs={12} style={{ textAlign: 'center' }}>
             <Typography variant="h6" gutterBottom>
               {`Deseja confirmar a ${this.state.event?.name}?`}
             </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={3}>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
-                <Button variant="contained" color="primary" onClick={this.confirmation}>
-                  Sim
+          </Grid>}
+          {!this.state.register &&
+            <Grid item xs={12}>
+              <Grid container spacing={3}>
+                <Grid item xs={6} style={{ textAlign: 'right' }}>
+                  <Button variant="contained" color="primary" onClick={this.confirmation}>
+                    Sim
               </Button>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'left' }}>
-                <Button variant="contained" color="secondary" onClick={this.goBack}>
-                  Não
+                </Grid>
+                <Grid item xs={6} style={{ textAlign: 'left' }}>
+                  <Button variant="contained" color="secondary" onClick={this.goBack}>
+                    Não
             </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
+            </Grid>}
         </Grid>
-        {(this.state.feedBackMessage && this.state.feedBackStatus) &&
-          <SnackbarFeedback
-            message={this.state.feedBackMessage}
-            status={this.state.feedBackStatus} />}
       </Container>
     )
   }
 }
+
+export default withSnackbar(EventRegister)

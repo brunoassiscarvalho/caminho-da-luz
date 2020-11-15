@@ -8,7 +8,7 @@ export default class UserService extends Service {
   }
 
   async resetPass(params) {
-    const res = await this.requestServer("POST", "/auth/reset-password", params)    
+    const res = await this.requestServer("POST", "/user/reset-password", params)    
     return res;
   }
 

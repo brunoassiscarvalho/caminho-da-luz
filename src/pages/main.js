@@ -5,12 +5,13 @@ import NavBar from '../components/navBar';
 export default class Main extends Component {
 
   render() {
-    const { routes, validateRoute } = this.props
+    const { routes, validateRoute, changePassRoute } = this.props
     console.log("caminhoDaLuz-status",sessionStorage.getItem("caminhoDaLuz-status"), validateRoute)
     return (
       <>
         <NavBar />
         {sessionStorage.getItem("caminhoDaLuz-status") == 10 && <Routes routes={routes} />}
+        {sessionStorage.getItem("caminhoDaLuz-status") == 5 && <Routes routes={changePassRoute} />}
         {sessionStorage.getItem("caminhoDaLuz-status") == 0 && <Routes routes={validateRoute} />}
       </>
     );

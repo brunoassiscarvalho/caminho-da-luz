@@ -4,6 +4,7 @@ import axios from "axios"
 export default class ParticipantService extends Service {
 
   async createParticipant(params) {
+    console.log("create", params)
     const res = await this.requestServer("POST", "/participant/create", params)
     return res.data;
   }

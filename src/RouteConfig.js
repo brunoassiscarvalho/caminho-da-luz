@@ -13,6 +13,7 @@ import EventParticipant from "./pages/events/eventParticipant";
 import EventSelecParticipant from "./pages/events/eventSelecParticipant";
 import UserPass from "./pages/user/userPass";
 import UserValidate from "./pages/user/userValidate";
+import UserResetPass from "./pages/user/userResetPass";
 
 export default [
   {
@@ -25,7 +26,7 @@ export default [
     path: "/reset-pass",
     exact: true,
     name: "Esqueci a senha",
-    component: UserValidate
+    component: UserResetPass
   },
   {
     path: "/main",
@@ -41,6 +42,20 @@ export default [
             name: "Validação",
             path: "/main",
             component: UserValidate
+          }
+        ]
+      }
+    ],
+    changePassRoute: [
+      {
+        path: "/main",
+        component: Transaction,
+        routes: [
+          {
+            exact: true,
+            name: "Validação",
+            path: "/main",
+            component: UserPass
           }
         ]
       }

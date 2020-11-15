@@ -1,5 +1,5 @@
 const mongoose = require('../database');
-const moment = require ('moment')
+const moment = require('moment')
 moment.locale('pt-br');
 
 const ParticipantSchema = new mongoose.Schema({
@@ -27,9 +27,9 @@ const ParticipantSchema = new mongoose.Schema({
       isParticipant: { type: Boolean },
     }
   ],
-  events:[
+  events: [
     {
-      kind:{ type: Number, enum: [0] },
+      kind: { type: Number, enum: [0] },
       date: { type: Date },
     }
   ],
@@ -39,8 +39,8 @@ const ParticipantSchema = new mongoose.Schema({
 ParticipantSchema.pre('save', async function (next) {
   this.cpf = this.cpf.replace(/\D/g, '');
   console.log("this.tel", this.tel)
-  this.tel = this.tel.map(tel => tel.replace(/\D/g, ''))
-  this.address.cep = this.address.cep.replace(/\D/g, '');
+  if (this.tel) this.tel = this.tel.map(tel => tel.replace(/\D/g, ''))
+  if (this.address?.cep) this.address.cep = this.address.cep.replace(/\D/g, '');
   next();
 })
 

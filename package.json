@@ -22,6 +22,7 @@
     "moment": "^2.29.1",
     "mongoose": "^5.10.11",
     "nodemailer": "^6.4.15",
+    "notistack": "^1.0.1",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

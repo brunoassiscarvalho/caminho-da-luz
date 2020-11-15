@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const User = require('../model/user');
 
-module.exports = (req, res, next) => {
+exports.validateToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) return res.status(401).send({ error: "Dados de autorização inválidos!" })
@@ -9,9 +10,21 @@ module.exports = (req, res, next) => {
 
   const [scheme, token] = authHeader.split(' ');
 
-  jwt.verify(token, process.env.DATA_MODE, (err, decoded) => {
-    if (err) return res.status(401).send({ error: "Autorização inválida!" })
-    req.userId = decoded.id;
+  try {
+    const decoded = jwt.verify(token, process.env.DATA_MODE);
+    const user = await User.findById(decoded._id)
+    if (!user) return res.status(403).send({ error: "Autorização inválida!" }) 
+    req.user = user  
     return next();
-  })
+  }
+  catch (ex) { 
+    return res.status(401).send({ error: "Autorização inválida!" }) 
+  } 
 }
+
+
+exports.validateUserActive = async (req, res, next) => {
+  if (req.user.status != 10) return res.status(403).send({ error: "Autorização inválida!" })
+  return next();
+}
+

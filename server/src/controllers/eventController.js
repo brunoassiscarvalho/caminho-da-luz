@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const authMidlleware = require('../middlewares/auth');
+const {validateToken, validateUserActive} = require('../middlewares/auth');
 const Event = require('../model/event');
 
-router.use(authMidlleware)
+router.use(validateToken, validateUserActive)
 
 
 router.post('/create', async (req, res) => {

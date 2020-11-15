@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const authMidlleware = require('../middlewares/auth');
+const {validateToken, validateUserActive} = require('../middlewares/auth');
 const Tag = require('../model/tag');
 
-router.use(authMidlleware)
+router.use(validateToken, validateUserActive)
 
 router.get('', async (req, res) => {
     res.send("/tag")

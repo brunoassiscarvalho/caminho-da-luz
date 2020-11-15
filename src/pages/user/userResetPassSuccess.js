@@ -2,8 +2,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-// import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -11,23 +9,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link, useHistory } from 'react-router-dom';
-import LoginService from './loginService';
+import UserService from '../user/userService';
 import FormComponent from '../../components/formComponent'
 
 const schema = {
   type: "object",
-  required: ["email", "password"],
+  required: ["email"],
   properties: {
     email: { type: "string", title: "Email", default: "" },
-    password: { type: "string", title: "Senha", default: "" },
   }
 };
-
-const uiSchema = {
-  password: {
-    "ui:widget": "password"
-  },
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-const loginService = new LoginService();
+const userService = new UserService();
 
 
 export default function Login() {
@@ -60,12 +51,13 @@ export default function Login() {
 
   function onSubmit(form) {
     setEmail(form.formData.email);
-    loginService.authenticate(form.formData).then(
-      () => {
-        history.push('/main')
+    userService.resetPass(form.formData).then(
+      (data) => {
+        // history.push('/main')
+        console.log(data)
       }
     ).catch(err => {
-      setErroMessage(err.response?.data?.error || "Não foi possível logar")
+      setErroMessage(err.response?.data?.error || "Não foi enviar o email")
       setOpen(true);
     })
   }
@@ -87,8 +79,12 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Caminho da Luz
 				</Typography>
+        <br></br>
+        <Typography variant="subtitle1">
+          Sua nova senha será enviada para seu email
+				</Typography>
         <form className={classes.form} noValidate>
-          <FormComponent schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} formData={{ email }}>
+          <FormComponent schema={schema} onSubmit={onSubmit} formData={{ email }}>
             <Button
               type="submit"
               fullWidth
@@ -96,17 +92,9 @@ export default function Login() {
               color="primary"
               className={classes.submit}
             >
-              Entrar
+              Enviar
 					</Button>
-          </FormComponent>
-
-          <Grid container>
-            <Grid item xs>
-              <Link to="/reset-pass" variant="body2">
-                Esqueci minha senha?
-					</Link>
-            </Grid>
-          </Grid>
+          </FormComponent>          
         </form>
       </div>
       <Snackbar

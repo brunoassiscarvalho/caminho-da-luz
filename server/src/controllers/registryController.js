@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const authMidlleware = require('../middlewares/auth');
+const {validateToken, validateUserActive} = require('../middlewares/auth');
 const Registry = require('../model/registry');
 const Event = require('../model/event');
 const ObjectID  = require('mongodb').ObjectID
 
-router.use(authMidlleware)
+router.use(validateToken, validateUserActive)
 
 
 router.post('/create', async (req, res) => {

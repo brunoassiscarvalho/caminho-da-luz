@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Button } from '@material-ui/core'
 import FormComponent from '../../components/formComponent';
-import SnackbarFeedback from '../../components/snackbarFeedback';
+import { withSnackbar } from 'notistack';
 import EventService from './eventService';
 
 const schema = {
@@ -17,24 +17,24 @@ const schema = {
 };
 
 const uiSchema = {
-  description:{
-    "ui:widget":"textarea"
+  description: {
+    "ui:widget": "textarea"
   }
-   
+
 }
 
-export default class EventForm extends Component {
+class EventForm extends Component {
   constructor(props) {
     super(props)
     this.state = {};
     this.eventService = new EventService();
-    const { eventId} = this.props.match.params;
+    const { eventId } = this.props.match.params;
     this.eventId = eventId;
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  componentDidMount(){
-    if(this.eventId) this.getEvent(this.eventId)
+  componentDidMount() {
+    if (this.eventId) this.getEvent(this.eventId)
   }
   getEvent(eventId) {
     this.eventService.getEvent(eventId).then(data => {
@@ -53,46 +53,36 @@ export default class EventForm extends Component {
   createEvent(data) {
     this.eventService.createEvent(data.formData).then((data) => {
       if (data.date) data.date = data.date.toString().split("T")[0];
-      this.setState({ formData: data })
-      this.setState({ feedBackMessage: "Evento criado com sucesso", feedBackStatus: "success" })
+      this.props.enqueueSnackbar("Evento criado com sucesso", { variant: 'success' })
     }).catch((err) => {
-      this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
+      this.props.enqueueSnackbar(err.response.data.error, { variant: 'error' })
     })
 
   }
 
   updateEvent(data) {
-    this.eventService.updateEvent(data.formData).then((data) => {  
-      if (data.date) data.date = data.date.toString().split("T")[0];    
-      this.setState({ formData: data }, () => this.setState({ feedBackMessage: "Evento Atualizado com sucesso", feedBackStatus: "success" }))
+    this.eventService.updateEvent(data.formData).then((data) => {
+      if (data.date) data.date = data.date.toString().split("T")[0];
+      this.props.enqueueSnackbar("Evento atualizado com sucesso", { variant: 'success' })
     }).catch((err) => {
-      this.setState({ feedBackMessage: err.response.data.error, feedBackStatus: "error" })
+      this.props.enqueueSnackbar(err.response.data.error, { variant: 'error' })
     })
-    this.setState({ formData: this.copyformData })
   }
 
   render() {
     return (
       <Container>
-        {/* {this.state.schemaForm && */}
         <FormComponent
           formData={this.state.formData}
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={this.onSubmit}
         >
-          <Button
-            variant="contained"
-            type="submit"
-            color="primary"
-          >
-            Salvar
-                        </Button>
+          
         </FormComponent>
-        {/* } */}
-        {(this.state.feedBackMessage && this.state.feedBackStatus) && <SnackbarFeedback message={this.state.feedBackMessage} status={this.state.feedBackStatus} ></SnackbarFeedback>}
-
       </Container>
     )
   }
 }
+
+export default withSnackbar(EventForm);

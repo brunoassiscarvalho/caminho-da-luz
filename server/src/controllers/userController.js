@@ -1,12 +1,10 @@
 const express = require('express');
 const User = require('../model/user')
 const router = express.Router();
-const authMidlleware = require('../middlewares/auth');
+const {validateToken, validateUserActive} = require('../middlewares/auth');
 const { sendMail } = require('../email/mailController');
 
-router.use(authMidlleware)
-
-router.post('/register', async (req, res) => {
+router.post('/register',validateToken,validateUserActive, async (req, res) => {
   const { email } = req.body
   try {
     if (await User.findOne({ email })) return res.status(400).send({ error: "Email já cadastrado" })
@@ -20,7 +18,7 @@ router.post('/register', async (req, res) => {
   }
 })
 
-router.post('/validate-user', async (req, res) => {
+router.post('/validate-user',validateToken, async (req, res) => {
   const { email, password, name } = req.body
   try {
     const user = await User.findOneAndUpdate(
@@ -35,9 +33,9 @@ router.post('/validate-user', async (req, res) => {
   }
 })
 
-router.post('/change-pass', async (req, res) => {
+router.post('/change-pass',validateToken, async (req, res) => {
   const { password } = req.body
-  const _id = req.userId;
+  const _id = req.user._id;
   try {
     const user = await User.findOneAndUpdate(
       { _id },
@@ -48,6 +46,27 @@ router.post('/change-pass', async (req, res) => {
     return res.send({ user })
   } catch (err) {
     return res.status(400).send({ error: "Não foi possível mudar a senha" })
+  }
+})
+
+router.post('/reset-password', async (req, res) => {
+  const { email } = req.body
+  const user = await User.findOne({email})
+  if (!user) return res.status(403).send({ error: "Autorização inválida!" })
+  const status = user.status == 0 ? 0 : 5;
+  try {
+    const pass = Math.random().toString(36).slice(-8)
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $set: { password: pass, status: status } },
+      { new: true }
+    )
+    sendMail(updatedUser.email, pass);
+    updatedUser.password = undefined;
+    return res.send({ updatedUser })
+  } catch (err) {
+    console.log("errr", err);
+    return res.status(400).send({ error: "Não foi possível fazer uma nova senha" })
   }
 })
 

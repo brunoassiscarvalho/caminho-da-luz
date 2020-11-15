@@ -14,7 +14,7 @@ export default class Service {
   }
 
   async requestServer(method, url, data) {
-    const headers = { Authorization: `Bearer ${sessionStorage.getItem("caminhoDaLuz-token")}` };
+    const headers = { Authorization: `Bearer ${sessionStorage.getItem("caminhoDaLuz-token")}` };    
     return axios(url, this._objectRequest(method, data, headers));
   }
 

@@ -2,20 +2,32 @@ import React, { Component } from 'react'
 import { Grid, Button } from '@material-ui/core'
 import FormComponent from '../../components/formComponent'
 import UserService from './userService';
+import { Link as RouterLink} from 'react-router-dom';
 
 
 const schema = {
   type: "object",
-  properties: {    
+  required: ["name", "password", "password2"],
+  properties: {
     name: { type: "string", title: "Nome" },
     password: { type: "string", minLength: 6, title: "Nova Senha" },
     password2: { type: "string", minLength: 6, title: "Confirme a senha" },
   }
 };
 
+const uiSchema = {
+  password: {
+    "ui:widget": "password"
+  },
+  password2: {
+    "ui:widget": "password"
+  },
+}
+
 export default class UserValidate extends Component {
   constructor(props) {
     super(props)
+    this.state={}
     this.userService = new UserService()
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -31,7 +43,7 @@ export default class UserValidate extends Component {
     const user = { ...data.formData, email: sessionStorage.getItem("caminhoDaLuz-email") }
     console.log("user ", user)
     this.userService.validateUser(user).then((data) =>
-      console.log("Dta", data))
+      this.setState({success:true}))
       .catch((err) =>
         console.log("erro", err)
       )
@@ -42,10 +54,12 @@ export default class UserValidate extends Component {
       <Grid container>
         <Grid item>
           Alteração de senha
-          <FormComponent
+         {!this.state.success && <FormComponent
             schema={schema}
+            uiSchema={uiSchema}
             validate={this.validate}
-            onSubmit={this.onSubmit}>
+            onSubmit={this.onSubmit}
+            >
             <Button
               variant="contained"
               type="submit"
@@ -54,7 +68,19 @@ export default class UserValidate extends Component {
               Salvar
                         </Button>
 
-          </FormComponent>
+          </FormComponent>}
+          {this.state.success && <>
+          Dados registrados com sucesso
+
+          <Button
+              component={RouterLink} to="/"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              Continuar
+            </Button>
+          </>}
         </Grid>
       </Grid>
     )

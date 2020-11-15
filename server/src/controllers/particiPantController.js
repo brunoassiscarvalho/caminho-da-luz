@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const authMidlleware = require('../middlewares/auth');
+const {validateToken, validateUserActive} = require('../middlewares/auth');
 const Paricipant = require('../model/participant');
 
-router.use(authMidlleware)
+router.use(validateToken, validateUserActive)
 
 
 router.post('/create', async (req, res) => {
@@ -13,7 +13,7 @@ router.post('/create', async (req, res) => {
         return res.send(participant)
     }catch(err){
         if(err.code===11000) res.status(400).send({ error: "Não foi possível prosseguir. Participante já cadastrado" })
-        else res.status(400).send({ error: "Não foi possível cadastrar o participante" })      
+        else res.status(400).send({ error: "Não foi possível cadastrar o participante", err })      
     }
 })
 

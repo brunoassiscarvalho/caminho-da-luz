@@ -19,6 +19,7 @@ class ParticipantList extends Component {
     this.listParticipants = [];
     this.selectParticipant = this.selectParticipant.bind(this)
   }
+ 
 
   componentDidMount() {
     this.getParticipantList();

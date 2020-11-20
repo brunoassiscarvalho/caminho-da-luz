@@ -50,6 +50,26 @@ router.post('/change-pass',validateToken, async (req, res) => {
   }
 })
 
+router.post('/new-pass',validateToken,validateUserActive, async (req, res) => {
+  const { email } = req.body
+  const user = await User.findOne({email})
+  if (!user) return res.status(403).send({ error: "Autorização inválida!" })
+  const status = user.status == 0 ? 0 : 5;
+  try {
+    const pass = Math.random().toString(36).slice(-8)
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $set: { password: pass, status: status } },
+      { new: true }
+    )    
+    updatedUser.password = pass;
+    return res.send({ updatedUser })
+  } catch (err) {
+    console.log("errr", err);
+    return res.status(400).send({ error: "Não foi possível fazer uma nova senha" })
+  }
+})
+
 router.post('/reset-password', async (req, res) => {
   const { email } = req.body
   const user = await User.findOne({email})

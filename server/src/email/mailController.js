@@ -30,7 +30,7 @@ exports.sendMail = (email, pass)=>{
   transporter.sendMail(emailBuilder(email,pass), (err, info) => { // Função que, efetivamente, envia o email.
     if (err) {
       console.log(err, email,pass)
-      throw "não foi possível enviar o email "
+      throw "não foi possível enviar o email"
     }    
     return info
   })

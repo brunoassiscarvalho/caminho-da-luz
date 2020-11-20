@@ -11,7 +11,8 @@ router.post('/register',validateToken,validateUserActive, async (req, res) => {
     const pass = Math.random().toString(36).slice(-8)
     const user = await User.create({ email: email, password: pass, status: 0 })
     sendMail(user.email, pass.password);
-    user.password = undefined;
+    // user.password = undefined;
+    user.password = pass;
     return res.send({ user })
   } catch (err) {
     return res.status(400).send({ error: "Não foi possível criar um novo usuário" })

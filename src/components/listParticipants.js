@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ListItem, ListItemText, IconButton, InputBase, Paper, Typography, Grid, Box } from '@material-ui/core';
+import { ListItem, ListItemText, IconButton, InputBase, Paper, Typography, Grid} from '@material-ui/core';
 import { Search as SearchIcon, People as PeopleIcon } from '@material-ui/icons';
 
 export default class ListParticipants extends Component {

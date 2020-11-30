@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Container, Button } from '@material-ui/core';
+import { Container} from '@material-ui/core';
 import ParticipantService from './participantService';
 import Utils from '../../utils/utils'
 import FormComponent from '../../components/formComponent';
@@ -117,7 +117,7 @@ class ParticipantForm extends Component {
     this.participantService.getStates().then((data) => {
       const states = data.map(item => item.sigla)
       schema.properties.originState.enum = states;
-      states.map(stateItem => {
+      states.forEach(stateItem => {
         this.participantService.getCities(stateItem).then((data) => {
           const citiesList = data.map(city => city.nome)
           const properties = {
@@ -164,6 +164,7 @@ class ParticipantForm extends Component {
   }
 
   onBlur(id, value) {
+    console.log("participant form", id, value)
     if (id === "root_address_cep") {
       this.participantService.getAddress(value).then(data => {
         const address = {
@@ -194,8 +195,9 @@ class ParticipantForm extends Component {
             onSubmit={({formData}) => this.onSubmit({formData})}
             validate={this.validate}
             onBlur={this.onBlur}
-            onChange={({formData}) => this.setState({formData})}
+            onChange={({formData}) => this.setState({formData}, ()=>console.log(formData))}
             buttonSubmit="Salvar"
+
           />          
         }        
       </Container>

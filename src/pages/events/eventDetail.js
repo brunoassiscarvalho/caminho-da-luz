@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Grid } from '@material-ui/core'
+import { Container} from '@material-ui/core'
 import EventService from './eventService';
 import TextLabel from '../../components/textLabel';
-import IconCard from '../../components/IconCard';
-import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment'
 
 export default class EventDetail extends Component {

@@ -10,9 +10,9 @@ export default class Main extends Component {
     return (
       <>
         <NavBar />
-        {sessionStorage.getItem("caminhoDaLuz-status") == 10 && <Routes routes={routes} />}
-        {sessionStorage.getItem("caminhoDaLuz-status") == 5 && <Routes routes={changePassRoute} />}
-        {sessionStorage.getItem("caminhoDaLuz-status") == 0 && <Routes routes={validateRoute} />}
+        {sessionStorage.getItem("caminhoDaLuz-status") === "10" && <Routes routes={routes} />}
+        {sessionStorage.getItem("caminhoDaLuz-status") === "5" && <Routes routes={changePassRoute} />}
+        {sessionStorage.getItem("caminhoDaLuz-status") === "0" && <Routes routes={validateRoute} />}
       </>
     );
   }

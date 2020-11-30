@@ -8,9 +8,7 @@ import {
 import routes from "./RouteConfig"
 
 export default class App extends Component {
-  constructor(props) {
-    super(props)
-  }
+
   render() {
     return (
       <Router>

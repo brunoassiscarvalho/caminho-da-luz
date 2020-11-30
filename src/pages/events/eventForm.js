@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Button } from '@material-ui/core'
+import { Container } from '@material-ui/core'
 import FormComponent from '../../components/formComponent';
 import { withSnackbar } from 'notistack';
 import EventService from './eventService';

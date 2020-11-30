@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import Form from '@rjsf/material-ui';
 import {Button} from '@material-ui/core'
 import FormattedInputs from './formattedInputs'
+import CustomComboBox from './customComboBox';
+
 
 const widgets = {
-  "formattedInputs": FormattedInputs
+  formattedInputs: FormattedInputs,
+  SelectWidget: CustomComboBox
 }
 
 export default class FormComponent extends Component {
@@ -34,7 +37,7 @@ export default class FormComponent extends Component {
           type="submit"
           color="primary"
         >
-          {this.props.button}
+          {this.props.buttonSubmit || "ok"}
           </Button>}
       </Form>
     );

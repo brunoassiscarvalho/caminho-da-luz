@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Typography, Grid, Fab, Divider } from '@material-ui/core'
+import { Container, Typography, Grid, Divider } from '@material-ui/core'
 import TextLabel from '../../components/textLabel'
 import ParticipantService from './participantService'
 import { MARITAL_STATUS, KINSHIP } from '../../utils/constants'
-import { Link as RouterLink } from 'react-router-dom';
-import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment'
 
 export default class ParticipantDetail extends Component {

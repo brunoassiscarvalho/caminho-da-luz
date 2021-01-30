@@ -22,6 +22,12 @@ export default class FormComponent extends Component {
         formData: props.formData
       };
     }
+
+    if (props.key !== state.key) {
+      return {
+        key: props.key
+      };
+    }
     return null;
   }
 

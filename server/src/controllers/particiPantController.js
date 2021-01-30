@@ -9,6 +9,7 @@ router.use(validateToken, validateUserActive)
 router.post('/create', async (req, res) => {
 
     try{
+        console.log("participant", req.body)
         const participant = await Paricipant.create(req.body);
         return res.send(participant)
     }catch(err){

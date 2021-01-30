@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Container} from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
 import ParticipantService from './participantService';
 import Utils from '../../utils/utils'
 import FormComponent from '../../components/formComponent';
@@ -96,7 +96,7 @@ class ParticipantForm extends Component {
     this.participantService = new ParticipantService()
     this.onSubmit = this.onSubmit.bind(this)
     this.onBlur = this.onBlur.bind(this)
-    this.state = { formData: {}};
+    this.state = { formData: {}, formKey: Date.now() };
     const { participantId } = this.props.match.params;
     this.participantId = participantId;
   }
@@ -107,7 +107,7 @@ class ParticipantForm extends Component {
   }
 
   getParticipant(participantId) {
-    this.participantService.getParticipant(participantId).then(data => {  
+    this.participantService.getParticipant(participantId).then(data => {
       if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
       this.setState({ formData: data })
     })
@@ -138,28 +138,51 @@ class ParticipantForm extends Component {
 
   onSubmit(data) {
     if (this.participantId)
-      this.updateParticipant(data)
+      this.updateParticipant(data, false)
     else
-      this.createParticipant(data)
+      this.createParticipant(data, false)
 
   }
+  onSaveAndNewParticipant = () => { 
+    if (this.participantId)
+      this.updateParticipant(this.state.formData, true)
+    else
+      this.createParticipant(this.state.formData, true)
+  }
 
-  createParticipant(data) {
-    this.participantService.createParticipant(data.formData).then((data) => {
-      if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
-      this.participantId = data._id
-      this.props.enqueueSnackbar("Participante cadastado com sucesso",{variant: 'success'})     
-    }).catch((err) => {
-      this.props.enqueueSnackbar(err.response.data.error,{variant: 'error'})
+  onSaveAndReturn = () => {
+    console.log("onSaveAndReturn") 
+    this.props.history.push('/main/participant')
+  }
+
+  resetForm() {
+    console.log("reset form")
+    this.setState({
+      formKey: Date.now(),  // update key if want to create a new instance
+      formData: {}
     })
   }
 
-  updateParticipant(data) {
+  createParticipant(data, reset) {
+    console.log("createParticipant", data)
+    this.participantService.createParticipant(data.formData).then((data) => {
+      if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
+      this.participantId = data._id
+      this.props.enqueueSnackbar("Participante cadastado com sucesso", { variant: 'success' })
+      if (reset) this.resetForm();
+    }).catch((err) => {
+      this.props.enqueueSnackbar(err.response.data.error, { variant: 'error' })
+    })
+  }
+
+  updateParticipant(data, reset) {
+    console.log("updateParticipant", data)
     this.participantService.updateParticipant(data.formData).then((data) => {
       if (data.birthDate) data.birthDate = data.birthDate.toString().split("T")[0];
-      this.props.enqueueSnackbar("Participante Atualizado com sucesso",{variant: 'success'})
+      this.props.enqueueSnackbar("Participante Atualizado com sucesso", { variant: 'success' })
+      if (reset) this.resetForm();
     }).catch((err) => {
-      this.props.enqueueSnackbar(err.response.data.error,{variant: 'error'})
+      this.props.enqueueSnackbar(err.response.data.error, { variant: 'error' })
     })
   }
 
@@ -189,17 +212,20 @@ class ParticipantForm extends Component {
       <Container style={{ paddingBottom: 80, paddingTop: 20 }}>
         {this.state.schemaForm &&
           <FormComponent
+            key={this.state.formKey}
             formData={this.state.formData}
             schema={schema}
             uiSchema={UiSchema}
-            onSubmit={({formData}) => this.onSubmit({formData})}
+            onSubmit={({ formData }) => this.onSubmit({ formData })}
             validate={this.validate}
             onBlur={this.onBlur}
-            onChange={({formData}) => this.setState({formData}, ()=>console.log(formData))}
+            onChange={({ formData }) => this.setState({ formData }, () => console.log(formData))}
             buttonSubmit="Salvar"
-
-          />          
-        }        
+          >
+            {/* <Button onClick={this.onSaveAndNewParticipant}>salvar e novo</Button>
+            <Button onClick={this.onSaveAndReturn}>salvar e voltar</Button> */}
+          </FormComponent>
+        }
       </Container>
     );
   }

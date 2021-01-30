@@ -77,6 +77,7 @@ class EventForm extends Component {
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={this.onSubmit}
+          buttonSubmit="Salvar"
         >
           
         </FormComponent>
